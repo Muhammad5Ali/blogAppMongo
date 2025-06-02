@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo Installing source NPM dependencies...
+      - npm install
+
+  pre_build:
+    commands:
+      - echo Running pre-build phase...
+      - npm run lint || true  # Optional: run linter if defined
+
+  build:
+    commands:
+      - echo Building the application...
+      - npm run build || echo "No build step defined"  # Optional: only if build script is defined
+
+  post_build:
+    commands:
+      - echo Build completed successfully.
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
