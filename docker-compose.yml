@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      # - MONGO_URL=mongodb://mongo:27017/myblogdb
+      - MONGO_URI=mongodb+srv://aliblog:aliblog123@cluster0.ivwzezk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+
+
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./Cloud-Computing
+    container_name: Cloud-Computing
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+
+
+# version: '3.8' # Or '3.9', both are fine. Sticking to 3.8 is generally safe.
+
+# services:
+#   backend:
+#     build: ./backend # <--- IMPORTANT: This tells Docker Compose to BUILD your image from the ./backend directory
+#     container_name: backend
+#     ports:
+#       - "5000:5000" # Map host port 5000 to container port 5000
+#     environment:
+#       # For local development, you might hardcode the MONGO_URI or use a .env file
+#       - MONGO_URI=mongodb+srv://aliblog:aliblog123@cluster0.ivwzezk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+#       - NODE_ENV=development # Good practice for local
+#       - PORT=5000 # Ensure your backend application listens on this port
+
+#   frontend:
+#     build: ./Cloud-Computing # <--- IMPORTANT: This tells Docker Compose to BUILD your image from the ./Cloud-Computing directory
+#     container_name: frontend
+#     ports:
+#       - "3000:80" # Map host port 3000 to container port 80 (where your static frontend is likely served, e.g., by Nginx)
+#     depends_on:
+#       - backend # Frontend needs backend to be running to make API calls
+#     environment:
+#       # For local Docker Compose, frontend accesses backend using the service name 'backend'
+#       - REACT_APP_API_URL=http://backend:5000
+#       - NODE_ENV=development # Good practice for local
+
+  # Optional: If you want a local MongoDB for development instead of Atlas
+  # mongo:
+  #   image: mongo:latest
+  #   container_name: mongo
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongo-data:/data/db
+
+# Optional: If you use a local MongoDB
+# volumes:
+#   mongo-data:

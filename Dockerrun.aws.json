@@ -1,0 +1,42 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "backend",
+      "image": "754902276718.dkr.ecr.eu-north-1.amazonaws.com/backend:latest",
+      "essential": true,
+      "memory": 256,
+      "portMappings": [
+        {
+          "hostPort": 5000,
+          "containerPort": 5000
+        }
+      ],
+      "environment": [
+        {
+          "name": "MONGO_URI",
+          "value": "mongodb+srv://aliblog:aliblog123@cluster0.ivwzezk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+        }
+      ]
+    },
+    {
+      "name": "frontend",
+      "image": "754902276718.dkr.ecr.eu-north-1.amazonaws.com/frontend:latest",
+      "essential": true,
+      "memory": 256,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["backend"],
+      "environment": [
+        {
+          "name": "REACT_APP_API_URL",
+          "value": "http://backend:5000"
+        }
+      ]
+    }
+  ]
+}
