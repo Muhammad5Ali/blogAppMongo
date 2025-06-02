@@ -16,16 +16,28 @@ phases:
 
   pre_build:
     commands:
-      - echo Pre-build phase: linting (if scripts are defined)...
-      - cd backend && npm run lint || echo "No backend lint script"
-      - cd ../frontend && npm run lint || echo "No frontend lint script"
+      - echo Pre-build phase: linting if available...
+      - cd backend
+      - |
+        if npm run | grep -q lint; then
+          npm run lint
+        else
+          echo "No backend lint script"
+        fi
+      - cd ../frontend
+      - |
+        if npm run | grep -q lint; then
+          npm run lint
+        else
+          echo "No frontend lint script"
+        fi
       - cd ..
 
   build:
     commands:
       - echo Building frontend...
       - cd frontend
-      - npm run build || echo "No frontend build script"
+      - npm run build || echo "No build script defined"
       - cd ..
 
   post_build:
