@@ -1,5 +1,5 @@
+---
 version: 0.2
-
 phases:
   install:
     runtime-versions:
@@ -13,7 +13,6 @@ phases:
       - cd frontend
       - npm install
       - cd ..
-
   pre_build:
     commands:
       - echo Pre-build phase: linting if available...
@@ -32,19 +31,16 @@ phases:
           echo "No frontend lint script"
         fi
       - cd ..
-
   build:
     commands:
       - echo Building frontend...
       - cd frontend
-      - npm run build || echo "No build script defined"
+      - npm run build || echo "No frontend build script"
       - cd ..
-
   post_build:
     commands:
       - echo Build completed for frontend and backend.
-
 artifacts:
   files:
-    - '**/*'
+    - "**/*"
   discard-paths: no
