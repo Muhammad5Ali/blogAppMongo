@@ -5,22 +5,31 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo Installing source NPM dependencies...
+      - echo Installing backend dependencies...
+      - cd backend
       - npm install
+      - cd ..
+      - echo Installing frontend dependencies...
+      - cd frontend
+      - npm install
+      - cd ..
 
   pre_build:
     commands:
-      - echo Running pre-build phase...
-      - npm run lint || true  # Optional: run linter if defined
+      - echo Pre-build phase: linting (if scripts are defined)...
+      - cd backend && npm run lint || echo "No backend lint script" && cd ..
+      - cd frontend && npm run lint || echo "No frontend lint script" && cd ..
 
   build:
     commands:
-      - echo Building the application...
-      - npm run build || echo "No build step defined"  # Optional: only if build script is defined
+      - echo Building frontend...
+      - cd frontend
+      - npm run build || echo "No frontend build script"
+      - cd ..
 
   post_build:
     commands:
-      - echo Build completed successfully.
+      - echo Build completed for frontend and backend.
 
 artifacts:
   files:
